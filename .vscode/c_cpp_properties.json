@@ -33,6 +33,7 @@
                 "C:\\Users\\nupa\\Documents\\Arduino\\libraries\\Adafruit_SSD1327",
                 "C:\\Users\\nupa\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library",
                 "C:\\Users\\nupa\\AppData\\Local\\Arduino15\\packages\\adafruit\\hardware\\samd\\1.7.11\\libraries\\Wire",
+                "C:\\Users\\nupa\\Documents\\Arduino\\libraries\\SAMD_TimerInterrupt\\src",
                 "c:\\users\\nupa\\appdata\\local\\arduino15\\packages\\adafruit\\tools\\arm-none-eabi-gcc\\9-2019q4\\arm-none-eabi\\include\\c++\\9.2.1",
                 "c:\\users\\nupa\\appdata\\local\\arduino15\\packages\\adafruit\\tools\\arm-none-eabi-gcc\\9-2019q4\\arm-none-eabi\\include\\c++\\9.2.1\\arm-none-eabi",
                 "c:\\users\\nupa\\appdata\\local\\arduino15\\packages\\adafruit\\tools\\arm-none-eabi-gcc\\9-2019q4\\arm-none-eabi\\include\\c++\\9.2.1\\backward",
@@ -528,8 +529,7 @@
                 "__ATOMIC_ACQ_REL=4",
                 "__ATOMIC_RELEASE=3",
                 "USBCON"
-            ],
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+            ]
         }
     ]
 }
