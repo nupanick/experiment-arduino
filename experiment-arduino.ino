@@ -8,20 +8,21 @@
 #include <SAMDTimerInterrupt.h>
 SAMDTimer timer(TIMER_TC3);
 
-#define BUTTON_1 A2
-#define BUTTON_2 A3
-#define BUTTON_3 A4
+#define BUTTON_1 9
+#define BUTTON_2 10
+#define BUTTON_3 11
 #define POWER_LED 13
 
 #define WHITE SSD1327_WHITE
 #define BLACK SSD1327_BLACK
 
-// Everything is defined in the Board Support Package
-// DOTSTAR_NUM        number of onboard DotStars (typically just 1)
-// PIN_DOTSTAR_DATA   onboard DotStar data pin
-// PIN_DOTSTAR_CLK    onboard DotStar clock pin
+// These pins are defined by the board file
 Adafruit_DotStar rgbLed(DOTSTAR_NUM, PIN_DOTSTAR_DATA, PIN_DOTSTAR_CLK, DOTSTAR_BGR);
-Adafruit_SSD1327 screen(128, 128, &Wire, -1, 1000000);
+
+#define OLED_DC A5
+#define OLED_RESET -1
+#define OLED_CS A4
+Adafruit_SSD1327 screen(128, 128, &SPI, OLED_DC, OLED_RESET, OLED_CS);
 
 volatile bool aPrev, aCurr, bPrev, bCurr, cPrev, cCurr;
 volatile int counter = 0;
@@ -48,7 +49,7 @@ void setup() {
   delay(1000);
   screen.clearDisplay();
 
-  timer.attachInterruptInterval_MS(1000/60, update);
+  timer.attachInterruptInterval_MS(TIMER_INTERVAL_MS, update);
 }
 
 void update() {
