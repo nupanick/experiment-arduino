@@ -2,11 +2,13 @@
 #include <Adafruit_SSD1327.h>
 #include <splash.h>
 
-// Use hardware timer for time-critical events.
-#define USING_TIMER_TC3 true
-#define TIMER_INTERVAL_MS 1000/60
-#include <SAMDTimerInterrupt.h>
-SAMDTimer timer(TIMER_TC3);
+// these pins are defined by the itsybitsy's board file
+Adafruit_DotStar rgbLed(DOTSTAR_NUM, PIN_DOTSTAR_DATA, PIN_DOTSTAR_CLK, DOTSTAR_BGR);
+
+#define OLED_DC A5
+#define OLED_RESET -1
+#define OLED_CS A4
+Adafruit_SSD1327 screen(128, 128, &SPI, OLED_DC, OLED_RESET, OLED_CS);
 
 #define BUTTON_1 9
 #define BUTTON_2 10
@@ -16,17 +18,13 @@ SAMDTimer timer(TIMER_TC3);
 #define WHITE SSD1327_WHITE
 #define BLACK SSD1327_BLACK
 
-// These pins are defined by the board file
-Adafruit_DotStar rgbLed(DOTSTAR_NUM, PIN_DOTSTAR_DATA, PIN_DOTSTAR_CLK, DOTSTAR_BGR);
+bool aPrev, aCurr, bPrev, bCurr, cPrev, cCurr;
+int counter = 0;
+bool aPressed, bPressed, cPressed;
+unsigned long lastFrameTime;
+#define FRAME_ADVANCE 1000/60
 
-#define OLED_DC A5
-#define OLED_RESET -1
-#define OLED_CS A4
-Adafruit_SSD1327 screen(128, 128, &SPI, OLED_DC, OLED_RESET, OLED_CS);
-
-volatile bool aPrev, aCurr, bPrev, bCurr, cPrev, cCurr;
-volatile int counter = 0;
-volatile bool aPressed, bPressed, cPressed;
+/* arduino entry points: setup, loop */
 
 void setup() {
   // Show that we're running
@@ -44,12 +42,22 @@ void setup() {
   pinMode(BUTTON_3, INPUT_PULLUP);
 
   screen.begin();
+  screen.setRotation(3);
   drawLogo();
   screen.display();
   delay(1000);
-  screen.clearDisplay();
+  lastFrameTime = millis();
+}
 
-  timer.attachInterruptInterval_MS(TIMER_INTERVAL_MS, update);
+void loop() {
+  unsigned long now = millis();
+  if (now - lastFrameTime < FRAME_ADVANCE) {
+    delay(1);
+    return;
+  }
+  lastFrameTime += FRAME_ADVANCE;
+  update();
+  draw();
 }
 
 void update() {
@@ -65,7 +73,7 @@ void update() {
   counter = counter - (aCurr > aPrev) + (cCurr > cPrev); 
 }
 
-void loop() {
+void draw() {
   rgbLed.setPixelColor(0, 255 * aPressed, 255 * bPressed, 255 * cPressed);
   rgbLed.show();
   screen.clearDisplay();
@@ -75,6 +83,8 @@ void loop() {
   screen.display();
 }
 
+/* helper functions */
+
 void drawLogo() {
   screen.drawBitmap(
     (128 - splash1_width) / 2, 
@@ -82,7 +92,7 @@ void drawLogo() {
     splash1_data, 
     splash1_width, 
     splash1_height, 
-    15
+    WHITE
   );
 }
 
