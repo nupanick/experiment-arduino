@@ -70,7 +70,7 @@ void update() {
   aPressed = aPressed || aCurr;
   bPressed = bPressed || bCurr;
   cPressed = cPressed || cCurr;
-  counter = counter - (aCurr > aPrev) + (cCurr > cPrev); 
+  counter = counter + (aCurr > aPrev) - (cCurr > cPrev); 
 }
 
 void draw() {
@@ -98,22 +98,22 @@ void drawLogo() {
 
 void drawButtons() {
   if (aPressed) {
-    screen.fillCircle(16, 64, 14, WHITE);
+    screen.fillCircle(112, 16, 14, WHITE);
     aPressed = false;
   }
-  screen.drawCircle(16, 64, 14, WHITE);
+  screen.drawCircle(112, 16, 14, WHITE);
 
   if (bPressed) {
-    screen.fillCircle(64, 64, 14, WHITE);
+    screen.fillCircle(112, 64, 14, WHITE);
     bPressed = false;
   }
-  screen.drawCircle(64, 64, 14, WHITE);
+  screen.drawCircle(112, 64, 14, WHITE);
   
   if (cPressed) {
-    screen.fillCircle(112, 64, 14, WHITE);
+    screen.fillCircle(112, 112, 14, WHITE);
     cPressed = false;
   }
-  screen.drawCircle(112, 64, 14, WHITE);
+  screen.drawCircle(112, 112, 14, WHITE);
 }
 
 void drawHelloWorld() {
